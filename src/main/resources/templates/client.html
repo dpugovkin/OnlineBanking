@@ -18,11 +18,17 @@
         <tbody>
         <tr th:each="account:${client.accounts}">
             <td>
-                <a th:href="@{'/account/'+${account.id}}" th:text="${account.id}"></a>
+                <a th:href="@{'/accounts/'+${account.id}}" th:text="${account.id}"></a>
             </td>
             <td th:text="${account.balance}"></td>
         </tr>
         </tbody>
     </table>
+
+    <h3>Add new account</h3>
+    <form method="post" th:action="@{/accounts}">
+        <input id="clientid" name="clientid" th:value="${client.id}" type="hidden">
+        <input class="btn-sm" type="submit" value="Add">
+    </form>
 </div>
 </html>

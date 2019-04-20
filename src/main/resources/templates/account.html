@@ -20,7 +20,7 @@
         <tbody>
         <tr th:each="transaction:${account.transactions}">
             <td>
-                <a th:href="@{'/transaction/'+${transaction.id}}" th:text="${transaction.timeStamp}"></a>
+                <a th:href="@{'/transactions/'+${transaction.id}}" th:text="${transaction.timeStamp}"></a>
             </td>
             <td th:text="${transaction.transactionType}"></td>
             <td th:text="${transaction.amount}"></td>

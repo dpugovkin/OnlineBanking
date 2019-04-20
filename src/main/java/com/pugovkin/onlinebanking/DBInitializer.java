@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Transactional
 public class DBInitializer implements CommandLineRunner {
 
     private final ClientRepository clientRepository;

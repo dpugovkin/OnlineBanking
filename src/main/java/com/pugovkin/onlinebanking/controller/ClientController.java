@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping(path = "/client")
+@RequestMapping(path = "/clients")
 public class ClientController {
 
     private final ClientService clientService;
@@ -17,7 +17,7 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @GetMapping(path = "/all")
+    @GetMapping()
     public String getAll(Model model) {
         model.addAttribute("clients", clientService.getAll());
         return "clients";
@@ -29,7 +29,7 @@ public class ClientController {
         return "client";
     }
 
-    @PostMapping(path = "/new")
+    @PostMapping()
     public String addNew(@RequestParam("name") String name, @RequestParam("address") String address, @RequestParam("age") int age) {
         clientService.add(name, address, age);
         System.out.println(name + " " + address + " " + age);

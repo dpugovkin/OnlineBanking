@@ -16,7 +16,7 @@
         <tbody>
         <tr th:each="client:${clients}">
             <td>
-                <a th:href="@{'/client/'+${client.id}}" th:text="${client.name}"></a>
+                <a th:href="@{'/clients/'+${client.id}}" th:text="${client.name}"></a>
             </td>
             <td th:text="${client.address}"></td>
             <td th:text="${client.age}"></td>
@@ -25,7 +25,7 @@
         </tbody>
     </table>
     <h3>Add new user</h3>
-    <form method="post" th:action="@{/client/new}">
+    <form method="post" th:action="@{/clients}">
         <label for="name">Name: </label>
         <input id="name" name="name" type="text"><br/>
         <label for="address">Address: </label>
