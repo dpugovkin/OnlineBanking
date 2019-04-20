@@ -14,15 +14,25 @@
         </tr>
         </thead>
         <tbody>
-        <tr data-th-each="client : ${clients}">
+        <tr th:each="client:${clients}">
             <td>
-                <a data-th-text="${client.name}" th:href="@{'/client/'+${client.id}}"></a>
+                <a th:href="@{'/client/'+${client.id}}" th:text="${client.name}"></a>
             </td>
-            <td data-th-text="${client.address}"></td>
-            <td data-th-text="${client.age}"></td>
+            <td th:text="${client.address}"></td>
+            <td th:text="${client.age}"></td>
 
         </tr>
         </tbody>
     </table>
+    <h3>Add new user</h3>
+    <form method="post" th:action="@{/client/new}">
+        <label for="name">Name: </label>
+        <input id="name" name="name" type="text"><br/>
+        <label for="address">Address: </label>
+        <input id="address" name="address" type="text"><br/>
+        <label for="age">Age: </label>
+        <input id="age" name="age" type="number"><br/>
+        <input class="btn-sm" type="submit" value="Add">
+    </form>
 </div>
 </html>

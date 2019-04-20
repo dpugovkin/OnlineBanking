@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<div layout:fragment="content">
+    <h3 th:text="'Date: '+${transaction.timeStamp}"></h3>
+    <h5 th:text="'Operation type: '+${transaction.transactionType}"></h5>
+    <h5 th:text="'Amount: '+${transaction.amount}"></h5>
+    <h5 th:text="'Account NO: '+${transaction.account.id}"></h5>
+    <h5 th:text="'Owner: '+${transaction.account.client.name}"></h5>
+</div>
+</html>

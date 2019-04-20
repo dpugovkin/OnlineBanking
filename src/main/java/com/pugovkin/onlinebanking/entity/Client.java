@@ -20,6 +20,6 @@ public class Client extends AbstractEntity {
     private String address;
     private int age;
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Account> accounts;
 }

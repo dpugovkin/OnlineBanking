@@ -18,8 +18,8 @@ public class Account extends AbstractEntity {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "account")
     private List<Transaction> transactions;
-    private BigDecimal balance;
 
+    private BigDecimal balance;
 }

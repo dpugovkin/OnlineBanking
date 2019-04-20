@@ -17,11 +17,19 @@ public class ClientService {
         this.clientRepository = clientRepository;
     }
 
-    public List<Client> getAllClients() {
+    public List<Client> getAll() {
         return clientRepository.findAll();
     }
 
-    public Client getOneClient(int id) {
+    public Client getById(long id) {
         return clientRepository.getOne(id);
+    }
+
+    public void add(String name, String address, int age) {
+        Client client = new Client();
+        client.setName(name);
+        client.setAge(age);
+        client.setAddress(address);
+        clientRepository.save(client);
     }
 }

@@ -10,7 +10,6 @@ public class HomeController {
 
     @GetMapping
     public String mainPage() {
-        System.out.println("test redirect1");
         return "redirect:/client/all";
     }
 }

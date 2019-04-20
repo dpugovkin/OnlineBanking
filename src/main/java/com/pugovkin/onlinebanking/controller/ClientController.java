@@ -4,9 +4,7 @@ import com.pugovkin.onlinebanking.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping(path = "/client")
@@ -20,15 +18,21 @@ public class ClientController {
     }
 
     @GetMapping(path = "/all")
-    public String getAllClients(Model model) {
-        model.addAttribute("clients", clientService.getAllClients());
-        System.out.println("test redirect2");
+    public String getAll(Model model) {
+        model.addAttribute("clients", clientService.getAll());
         return "clients";
     }
 
     @GetMapping(path = "/{id}")
-    public String getOneClient(@PathVariable("id") int id, Model model) {
-        model.addAttribute("client", clientService.getOneClient(id));
+    public String getById(@PathVariable("id") long id, Model model) {
+        model.addAttribute("client", clientService.getById(id));
         return "client";
+    }
+
+    @PostMapping(path = "/new")
+    public String addNew(@RequestParam("name") String name, @RequestParam("address") String address, @RequestParam("age") int age) {
+        clientService.add(name, address, age);
+        System.out.println(name + " " + address + " " + age);
+        return "redirect:/client/all";
     }
 }
