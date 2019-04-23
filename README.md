@@ -24,14 +24,17 @@ Working features:
 + entity persistence.
 + views: client, clients, account, accounts, transaction, transactions.
 + form addition: client, account.
++ balance verificaton before transaction.
++ transaction creatiom view.
++ transaction filtering.
++ additional features:
+    # clients sorted by name alphabetically
+    # accounts sorted by balance descending
+    # transactions sorted by most recent
 ```
 
 TODO:
 
 ```
-- balance verifying before transaction.
-- hibernate locks on balance.
-- form addition: transaction.
-- transaction filtering.
-- additional features.
+- hibernate locks on balance
 ```

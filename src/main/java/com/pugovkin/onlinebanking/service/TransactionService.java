@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class TransactionService {
@@ -34,16 +36,17 @@ public class TransactionService {
         return transactionRepository.getOne(id);
     }
 
-    public boolean makeTransfer(Account source, Account destination, BigDecimal amount) {
-
+    public boolean makeTransfer(Account source, Account destination, BigDecimal amount, LocalDateTime time) {
+        if (time == null)
+            time = LocalDateTime.now();
         //if source null - cash top-up
 
         if (source != null) {
-            if (source.getBalance().compareTo(amount) == -1) {
+            if (amount.compareTo(BigDecimal.ZERO) <= 0 || source.getBalance().compareTo(amount) < 0) {
                 return false;
             }
             Transaction senderTransaction = new Transaction();
-            senderTransaction.setTimeStamp(LocalDateTime.now());
+            senderTransaction.setTimeStamp(time);
             senderTransaction.setAccount(source);
             senderTransaction.setTransactionType(TransactionType.WITHDRAW);
             senderTransaction.setAmount(amount);
@@ -54,7 +57,7 @@ public class TransactionService {
 
         if (destination != null) {
             Transaction receiverTransaction = new Transaction();
-            receiverTransaction.setTimeStamp(LocalDateTime.now());
+            receiverTransaction.setTimeStamp(time);
             receiverTransaction.setAccount(destination);
             receiverTransaction.setTransactionType(TransactionType.TOP_UP);
             receiverTransaction.setAmount(amount);
@@ -64,20 +67,44 @@ public class TransactionService {
     }
 
     public boolean newTransfer(MultiValueMap<String, String> formData) {
-        Account from = processRadioButton(formData, "radioFrom", "fromAccount");
-        Account to = processRadioButton(formData, "radioTo", "toAccount");
-        BigDecimal amount = BigDecimal.valueOf(Long.parseLong(Objects.requireNonNull(formData.getFirst("amount"))));
-        return makeTransfer(from, to, amount);
+        try {
+            Account from = processRadioButton(formData, "radioFrom", "fromAccount");
+            Account to = processRadioButton(formData, "radioTo", "toAccount");
+            BigDecimal amount = new BigDecimal(formData.getFirst("amount"));
+            return makeTransfer(from, to, amount, null);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
-    private Account processRadioButton(MultiValueMap<String, String> formData, String radio, String account) {
-        switch (Objects.requireNonNull(formData.getFirst(radio))) {
+    private Account processRadioButton(MultiValueMap<String, String> formData, String radio, String account) throws Exception {
+        switch (formData.getFirst(radio)) {
             case "cash":
                 return null;
             case "account":
-                return accountService.getById(Long.parseLong(Objects.requireNonNull(formData.getFirst(account))));
+                return accountService.getById(Long.parseLong(formData.getFirst(account)));
 
         }
         return null;
+    }
+
+    public List<Transaction> getClientTransactions(String dateFrom, String dateTo, Long clientId) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime from;
+        if (dateFrom.isEmpty()) {
+            from = LocalDateTime.of(2000, 1, 1, 0, 0);
+        } else
+            from = LocalDate.parse(dateFrom, formatter).atStartOfDay();
+        LocalDateTime to;
+        if (dateTo.isEmpty()) {
+            to = LocalDateTime.now();
+        } else
+            to = LocalDate.parse(dateTo, formatter).atTime(LocalTime.MAX);
+        System.out.println(from);
+        System.out.println(to);
+        if (clientId.equals(0L)) {
+            return transactionRepository.findAllByTimeStampBetween(from, to);
+        } else
+            return transactionRepository.findAllByAccount_ClientIdAndTimeStampBetween(clientId, from, to);
     }
 }

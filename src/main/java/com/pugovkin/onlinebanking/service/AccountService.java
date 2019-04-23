@@ -24,7 +24,7 @@ public class AccountService {
     }
 
     public List<Account> getAll() {
-        return accountRepository.findAll();
+        return accountRepository.findAllByOrderByBalanceDesc();
     }
 
     public Account getById(long id) {

@@ -5,10 +5,12 @@
       xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <div layout:fragment="content">
-    <h3 th:text="'Date: '+${transaction.timeStamp}"></h3>
-    <h5 th:text="'Operation type: '+${transaction.transactionType}"></h5>
-    <h5 th:text="'Amount: '+${transaction.amount}"></h5>
+    <h3 th:text="'Date: '+${#temporals.format(transaction.timeStamp,'dd-MM-yyyy HH:mm:ss')}"></h3>
     <h5 th:text="'Account NO: '+${transaction.account.id}"></h5>
     <h5 th:text="'Owner: '+${transaction.account.client.name}"></h5>
+    <h5 style="color: green;" th:if="${transaction.transactionType.name().equalsIgnoreCase('top_up')}"
+        th:text="'+'+${transaction.amount}"></h5>
+    <h5 style="color: red;" th:if="${transaction.transactionType.name().equalsIgnoreCase('withdraw')}"
+        th:text="'-'+${transaction.amount}"></h5>
 </div>
 </html>

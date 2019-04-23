@@ -8,22 +8,23 @@
     <h3 th:text="'Owner: '+${account.client.name}"></h3>
     <h5 th:text="'Account NO: '+${account.id}"></h5>
     <h5 th:text="'Balance: '+${account.balance}"></h5>
-    </form>
     <table class="table table-hover">
         <thead class="thead-dark">
         <tr>
             <th scope="col">DateTime</th>
-            <th scope="col">Type</th>
             <th scope="col">Amount</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="transaction:${account.transactions}">
             <td>
-                <a th:href="@{'/transactions/'+${transaction.id}}" th:text="${transaction.timeStamp}"></a>
+                <a th:href="@{'/transactions/'+${transaction.id}}"
+                   th:text="${#temporals.format(transaction.timeStamp, 'dd-MM-yyyy HH:mm:ss')}"></a>
             </td>
-            <td th:text="${transaction.transactionType}"></td>
-            <td th:text="${transaction.amount}"></td>
+            <td style="color: green;" th:if="${transaction.transactionType.name().equalsIgnoreCase('top_up')}"
+                th:text="'+'+${transaction.amount}"></td>
+            <td style="color: red;" th:if="${transaction.transactionType.name().equalsIgnoreCase('withdraw')}"
+                th:text="'-'+${transaction.amount}"></td>
         </tr>
         </tbody>
     </table>
