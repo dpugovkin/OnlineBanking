@@ -5,6 +5,7 @@
       xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <div layout:fragment="content">
+    <h2 style="color: green;" th:text="${message}"></h2>
     <form method="post" th:action="@{/transactions/new}">
         <h3>From:</h3>
         <input name="radioFrom" type="radio" value="cash"> Cash<br/>
@@ -21,7 +22,7 @@
                     th:value="${account.id}"></option>
         </select><br/><br/>
         <label for="amount">Amount: </label>
-        <input id="amount" name="amount" type="text"><br/>
+        <input id="amount" name="amount" type="number"><br/>
 
         <input class="btn-sm" type="submit" value="Transfer">
     </form>

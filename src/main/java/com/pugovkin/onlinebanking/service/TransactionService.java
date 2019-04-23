@@ -7,10 +7,12 @@ import com.pugovkin.onlinebanking.repository.TransactionRepository;
 import com.pugovkin.onlinebanking.utils.TransactionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TransactionService {
@@ -25,7 +27,7 @@ public class TransactionService {
     }
 
     public List<Transaction> getAll() {
-        return transactionRepository.findAll();
+        return transactionRepository.findAllByOrderByTimeStampDesc();
     }
 
     public Transaction getById(Long id) {
@@ -57,4 +59,21 @@ public class TransactionService {
         }
     }
 
+    public void newTransfer(MultiValueMap<String, String> formData) {
+        Account from = processRadioButton(formData, "radioFrom", "fromAccount");
+        Account to = processRadioButton(formData, "radioTo", "toAccount");
+        BigDecimal amount = BigDecimal.valueOf(Long.parseLong(Objects.requireNonNull(formData.getFirst("amount"))));
+        makeTransfer(from, to, amount);
+    }
+
+    private Account processRadioButton(MultiValueMap<String, String> formData, String radio, String account) {
+        switch (Objects.requireNonNull(formData.getFirst(radio))) {
+            case "cash":
+                return null;
+            case "account":
+                return accountService.getById(Long.parseLong(Objects.requireNonNull(formData.getFirst(account))));
+
+        }
+        return null;
+    }
 }
