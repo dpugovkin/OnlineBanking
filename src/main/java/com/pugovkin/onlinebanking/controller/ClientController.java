@@ -33,6 +33,6 @@ public class ClientController {
     public String addNew(@RequestParam("name") String name, @RequestParam("address") String address, @RequestParam("age") int age) {
         clientService.add(name, address, age);
         System.out.println(name + " " + address + " " + age);
-        return "redirect:/client/all";
+        return "redirect:/clients";
     }
 }

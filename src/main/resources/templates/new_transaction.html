@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorate="~{layout}"
+      xmlns="http://www.w3.org/1999/html"
+      xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<div layout:fragment="content">
+    <form method="post" th:action="@{/transactions/new}">
+        <h3>From:</h3>
+        <input name="radioFrom" type="radio" value="cash"> Cash<br/>
+        <input name="radioFrom" type="radio" value="account"> Account<br/>
+        <select name="fromAccount">
+            <option th:each="account:${accounts}" th:text="${account.client.name}+' '+${account.balance}+'$'"
+                    th:value="${account.id}"></option>
+        </select><br/>
+        <h3>To:</h3>
+        <input name="radioTo" type="radio" value="cash"> Cash<br/>
+        <input name="radioTo" type="radio" value="account"> Account<br/>
+        <select name="toAccount">
+            <option th:each="account:${accounts}" th:text="${account.client.name}+' '+${account.balance}+'$'"
+                    th:value="${account.id}"></option>
+        </select><br/><br/>
+        <label for="amount">Amount: </label>
+        <input id="amount" name="amount" type="text"><br/>
+
+        <input class="btn-sm" type="submit" value="Transfer">
+    </form>
+</div>
+</html>
