@@ -5,7 +5,10 @@
       xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <div layout:fragment="content">
-    <h2 style="color: green;" th:text="${message}"></h2>
+    <div th:switch="${result}">
+        <h2 style="color: red;" th:case="false">Transaction failed</h2>
+        <h2 style="color: green;" th:case="true">Transaction completed</h2>
+    </div>
     <form method="post" th:action="@{/transactions/new}">
         <h3>From:</h3>
         <input name="radioFrom" type="radio" value="cash"> Cash<br/>

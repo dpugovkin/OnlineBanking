@@ -34,11 +34,14 @@ public class TransactionService {
         return transactionRepository.getOne(id);
     }
 
-    public void makeTransfer(Account source, Account destination, BigDecimal amount) {
+    public boolean makeTransfer(Account source, Account destination, BigDecimal amount) {
 
         //if source null - cash top-up
 
         if (source != null) {
+            if (source.getBalance().compareTo(amount) == -1) {
+                return false;
+            }
             Transaction senderTransaction = new Transaction();
             senderTransaction.setTimeStamp(LocalDateTime.now());
             senderTransaction.setAccount(source);
@@ -57,13 +60,14 @@ public class TransactionService {
             receiverTransaction.setAmount(amount);
             accountService.changeBalance(destination, receiverTransaction, amount);
         }
+        return true;
     }
 
-    public void newTransfer(MultiValueMap<String, String> formData) {
+    public boolean newTransfer(MultiValueMap<String, String> formData) {
         Account from = processRadioButton(formData, "radioFrom", "fromAccount");
         Account to = processRadioButton(formData, "radioTo", "toAccount");
         BigDecimal amount = BigDecimal.valueOf(Long.parseLong(Objects.requireNonNull(formData.getFirst("amount"))));
-        makeTransfer(from, to, amount);
+        return makeTransfer(from, to, amount);
     }
 
     private Account processRadioButton(MultiValueMap<String, String> formData, String radio, String account) {

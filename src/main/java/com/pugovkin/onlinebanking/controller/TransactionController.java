@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -44,9 +45,9 @@ public class TransactionController {
     }
 
     @PostMapping(path = "/new")
-    public String newTrasaction(@RequestBody MultiValueMap<String, String> formData, Model model) {
-        transactionService.newTransfer(formData);
-        model.addAttribute("message", "Transaction completed");
-        return "new_transaction";
+    public String newTrasaction(@RequestBody MultiValueMap<String, String> formData, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("result", transactionService.newTransfer(formData));
+        redirectAttributes.addFlashAttribute("message", "Transaction completed");
+        return "redirect:/transactions/new";
     }
 }
